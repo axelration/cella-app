@@ -3,7 +3,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '10.0'
 
-target 'Kopertare' do
+target 'cellamobile' do
   rn_maps_path = '../node_modules/react-native-maps'
   pod 'react-native-google-maps', :path => rn_maps_path
   pod 'GoogleMaps'
@@ -13,7 +13,7 @@ target 'Kopertare' do
 
   use_react_native!(:path => config["reactNativePath"])
 
-  target 'KopertareTests' do
+  target 'cellamobileTests' do
     inherit! :complete
     # Pods for testing
   end
@@ -28,10 +28,10 @@ target 'Kopertare' do
   end
 end
 
-target 'Kopertare-tvOS' do
-  # Pods for Kopertare-tvOS
+target 'cellamobile-tvOS' do
+  # Pods for cellamobile-tvOS
 
-  target 'Kopertare-tvOSTests' do
+  target 'cellamobile-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
