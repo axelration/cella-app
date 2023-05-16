@@ -120,6 +120,10 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  */
 def enableHermes = project.ext.react.get("enableHermes", false);
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('apikey.properties').newDataInputStream())
+def googleAPIKey = properties.getProperty('GOOGLE_API_KEY')
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
@@ -129,11 +133,12 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.kopertare"
+        applicationId "com.cellamobile"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        manifestPlaceholders = [googleAPIKey: googleAPIKey]
     }
     splits {
         abi {
