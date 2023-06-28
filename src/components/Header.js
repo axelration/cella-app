@@ -16,19 +16,19 @@ class Header extends React.Component {
     const { user, title, subtitle } = this.props
 
     return (
-      <View style={[Styles.Padding6, Styles.BgWhite]}>
+      <View style={[Styles.Padding6, Styles.BgTheme2]}>
         <View style={[Styles.Flex1]}>
           <View style={[Styles.FlexRow]}>
             <View style={[Styles.Flex1, Styles.FlexContentCenter]}>
-              <Text style={[Styles.FontPrimaryMedium, Styles.TextBlack, Styles.Text6]}>{title || 'm-Kopertare'}</Text>
+              <Text style={[Styles.FontPrimaryMedium, Styles.TextWhite, Styles.Text6]}>{title || 'Cella Works'}</Text>
               <View style={[Styles.H2]} />
-              <Text style={[Styles.FontPrimaryRegular, Styles.TextBlack, Styles.Text4]}>{subtitle || ''}</Text>
+              <Text style={[Styles.FontPrimaryRegular, Styles.TextWhite, Styles.Text4]}>{subtitle || ''}</Text>
             </View>
             <View style={[Styles.W12, Styles.FlexContentCenter]}>
-              <Image source={{ uri: 'https://randomuser.me/api/portraits/women/90.jpg' }} resizeMode="contain" style={[Styles.W12, Styles.H12, Styles.BorderRadius6]} />
+              <Image source={require('../../assets/images/profile-pic.jpg')} resizeMode="contain" style={[Styles.W12, Styles.H12, Styles.BorderRadiusCella]} />
               <View style={[Styles.H1]} />
-              {user.data && user.data.name ? (
-                <Text style={[Styles.FontPrimaryMedium, Styles.TextOrange, Styles.TextCenter]}>{(user.data.name).split(' ')[0]}</Text>
+              {user.data && user.data.fullname ? (
+                <Text style={[Styles.FontPrimaryMedium, Styles.TextWhite, Styles.TextCenter]}>{(user.data.fullname).split(' ')[0]}</Text>
               ) : null}
             </View>
           </View>

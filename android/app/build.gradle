@@ -139,6 +139,7 @@ android {
         versionCode 1
         versionName "1.0"
         manifestPlaceholders = [googleAPIKey: googleAPIKey]
+        multiDexEnabled true
     }
     splits {
         abi {
@@ -186,6 +187,8 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.multidex:multidex:2.0.1'  //with androidx libraries
+    
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules

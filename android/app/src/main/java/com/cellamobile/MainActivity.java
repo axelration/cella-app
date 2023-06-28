@@ -1,4 +1,4 @@
-package com.kopertare;
+package com.cellamobile;
 
 import com.facebook.react.ReactActivity;
 

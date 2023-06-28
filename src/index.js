@@ -8,11 +8,12 @@ import { isObjectExist } from './utils/common'
 
 class App extends React.Component {
   static propTypes = {
-    user: PropTypes.object
+    user: PropTypes.object,
+    service: PropTypes.object
   }
 
   render() {
-    const { user } = this.props
+    const { user, service } = this.props
     const isAuthenticated = isObjectExist(user.data)
 
     return (
@@ -22,7 +23,8 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
+  service: state.service,
 })
 
 export default connect(mapStateToProps)(App)

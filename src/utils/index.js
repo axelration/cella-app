@@ -29,7 +29,9 @@ const Colors = {
   Pink: '#f27a7b',
   Transparent: 'transparent',
   WhiteTranscluent: 'rgba(255, 255, 255, 0.75)',
-  BlackTranscluent: 'rgba(0, 0, 0, 0.75)'
+  BlackTranscluent: 'rgba(0, 0, 0, 0.75)',
+  MapFill: 'rgba(65, 236, 226, 0.20)',
+  MapStroke: 'rgba(65, 236, 226, 0.80)',
 }
 
 const Fonts = {
@@ -426,6 +428,13 @@ const Styles = {
   BgBlackTranscluent: {
     backgroundColor: Colors.BlackTranscluent
   },
+  BgTheme1: {
+    backgroundColor: "rgba(215, 24, 14, 1)"
+  },
+  BgTheme2: {
+    // backgroundColor: "rgba(214, 14, 79, 1)"
+    backgroundColor: "linear-gradient(133deg, rgba(214, 14, 79, 1) 0%, rgba(252, 56, 55, 1) 100%);"
+  },
   Text1: {
     fontSize: 12
   },
@@ -719,6 +728,14 @@ const Styles = {
   },
   BorderRadius6: {
     borderRadius: 30
+  },
+  BorderRadiusCella: {
+    borderBottomRightRadius: 100,
+    borderTopLeftRadius: 100,
+    borderTopRightRadius: 100,
+  },
+  BorderRadiusRound: {
+    borderRadius: Math.round(width + height) / 2
   },
   BorderRadiusTop2: {
     borderTopLeftRadius: 10,

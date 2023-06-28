@@ -8,7 +8,7 @@ import Dashboard from './Main/Dashboard'
 import AbsentList from './Main/AbsentList'
 import Profile from './Main/Profile'
 
-import { Colors, Fonts } from '../utils/'
+import { Colors, Fonts, Styles } from '../utils/'
 import { isIphoneX } from '../utils/common'
 
 class Main extends React.Component {
@@ -22,7 +22,7 @@ class Main extends React.Component {
     return (
       <MainTab.Navigator
         tabBarOptions={{
-          activeTintColor: Colors.Blue,
+          activeTintColor: Colors.Red,
           inactiveTintColor: Colors.Grey,
           showLabel: true,
           style: {
@@ -54,7 +54,7 @@ class Main extends React.Component {
           options={{
             tabBarLabel: 'Beranda',
             tabBarIcon: ({ focused, color, size }) => (
-              <AntDesign name="home" size={28} color={focused ? Colors.Blue : Colors.Grey} />
+              <AntDesign name="home" size={28} color={focused ? Styles.BGTheme1 : Styles.Grey} />
             )
           }}
         />
@@ -64,7 +64,7 @@ class Main extends React.Component {
           options={{
             tabBarLabel: 'Dashboard',
             tabBarIcon: ({ focused, color, size }) => (
-              <AntDesign name="dashboard" size={28} color={focused ? Colors.Blue : Colors.Grey} />
+              <AntDesign name="dashboard" size={28} color={focused ? Styles.BGTheme1 : Colors.Grey} />
             )
           }}
         />
@@ -74,7 +74,7 @@ class Main extends React.Component {
           options={{
             tabBarLabel: 'Daftar Absen',
             tabBarIcon: ({ focused, color, size }) => (
-              <AntDesign name="bells" size={28} color={focused ? Colors.Blue : Colors.Grey} />
+              <AntDesign name="bells" size={28} color={focused ? Styles.BGTheme1 : Colors.Grey} />
             )
           }}
         />
@@ -84,7 +84,7 @@ class Main extends React.Component {
           options={{
             tabBarLabel: 'Profile',
             tabBarIcon: ({ focused, color, size }) => (
-              <AntDesign name="user" size={28} color={focused ? Colors.Blue : Colors.Grey} />
+              <AntDesign name="user" size={28} color={focused ? Styles.BGTheme1 : Colors.Grey} />
             )
           }}
         />

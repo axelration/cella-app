@@ -6,9 +6,10 @@ import AsyncStorage from '@react-native-community/async-storage'
 import reducers from './reducers'
 
 const persistConfig = {
-  key: 'kopertare',
+  key: 'cella',
   storage: AsyncStorage,
-  blacklist: ['language']
+  blacklist: ['language'],
+  whitelist: ['user', 'service'],
 }
 
 const persistedReducer = persistReducer(persistConfig, reducers)

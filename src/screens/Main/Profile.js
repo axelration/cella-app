@@ -1,12 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 import { Image, SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scroll-view'
 
 import { setUser } from '../../stores/actions/userAction'
+import { setToken } from '../../stores/actions/serviceAction'
 import { Header, Loading } from '../../components/'
 import { Styles } from '../../utils/'
+import { store } from '../../stores'
 
 class Profile extends React.Component {
   static propTypes = {
@@ -28,10 +30,11 @@ class Profile extends React.Component {
 
     this.setState({ loading: true })
 
-    setTimeout(() => {
-      this.setState({ loading: false })
+    // setTimeout(() => {
       dispatch(setUser({}))
-    }, 1000)
+      dispatch(setToken({}))
+      this.setState({ loading: false })
+    // }, 1000)
   }
 
   handleDataChange(label, value) {
@@ -41,6 +44,8 @@ class Profile extends React.Component {
   render() {
     const { user } = this.props
     const { data, loading } = this.state
+    let apiToken = store.getState().service.data
+    console.log('apitoken', apiToken)
 
     return (
       <SafeAreaView style={[Styles.Container, Styles.BgWhite]}>
@@ -54,42 +59,42 @@ class Profile extends React.Component {
                     <View style={[Styles.H2]} />
                     <View style={[Styles.FlexRow]}>
                       <View style={[Styles.Flex1]}>
-                        <Text style={[Styles.FontPrimaryRegular, Styles.TextBlack]}>{'ID Pekerja'}</Text>
+                        <Text style={[Styles.FontPrimaryRegular, Styles.TextBlack]}>{'Username'}</Text>
                       </View>
                       <View style={[Styles.Flex1]}>
-                        <Text style={[Styles.FontPrimaryRegular, Styles.TextBlack]}>{': ' +  user.data.id}</Text>
-                      </View>
-                    </View>
-                    <View style={[Styles.FlexRow]}>
-                      <View style={[Styles.Flex1]}>
-                        <Text style={[Styles.FontPrimaryRegular, Styles.TextBlack]}>{'Nama'}</Text>
-                      </View>
-                      <View style={[Styles.Flex1]}>
-                        <Text style={[Styles.FontPrimaryRegular, Styles.TextBlack]}>{': ' +  user.data.name}</Text>
+                        <Text style={[Styles.FontPrimaryRegular, Styles.TextBlack]}>{': ' +  user.data.username}</Text>
                       </View>
                     </View>
                     <View style={[Styles.FlexRow]}>
                       <View style={[Styles.Flex1]}>
-                        <Text style={[Styles.FontPrimaryRegular, Styles.TextBlack]}>{'Jabatan'}</Text>
+                        <Text style={[Styles.FontPrimaryRegular, Styles.TextBlack]}>{'Nama Lengkap'}</Text>
                       </View>
                       <View style={[Styles.Flex1]}>
-                        <Text style={[Styles.FontPrimaryRegular, Styles.TextBlack]}>{': ' +  user.data.position}</Text>
-                      </View>
-                    </View>
-                    <View style={[Styles.FlexRow]}>
-                      <View style={[Styles.Flex1]}>
-                        <Text style={[Styles.FontPrimaryRegular, Styles.TextBlack]}>{'Unit Kerja'}</Text>
-                      </View>
-                      <View style={[Styles.Flex1]}>
-                        <Text style={[Styles.FontPrimaryRegular, Styles.TextBlack]}>{': ' +  user.data.unit}</Text>
+                        <Text style={[Styles.FontPrimaryRegular, Styles.TextBlack]}>{': ' +  user.data.fullname}</Text>
                       </View>
                     </View>
                     <View style={[Styles.FlexRow]}>
                       <View style={[Styles.Flex1]}>
-                        <Text style={[Styles.FontPrimaryRegular, Styles.TextBlack]}>{'Tanggal Masuk'}</Text>
+                        <Text style={[Styles.FontPrimaryRegular, Styles.TextBlack]}>{'Nama Perusahaan'}</Text>
                       </View>
                       <View style={[Styles.Flex1]}>
-                        <Text style={[Styles.FontPrimaryRegular, Styles.TextBlack]}>{': ' +  user.data.date}</Text>
+                        <Text style={[Styles.FontPrimaryRegular, Styles.TextBlack]}>{': ' +  user.data.company_name}</Text>
+                      </View>
+                    </View>
+                    <View style={[Styles.FlexRow]}>
+                      <View style={[Styles.Flex1]}>
+                        <Text style={[Styles.FontPrimaryRegular, Styles.TextBlack]}>{'Lokasi Kerja'}</Text>
+                      </View>
+                      <View style={[Styles.Flex1]}>
+                        <Text style={[Styles.FontPrimaryRegular, Styles.TextBlack]}>{': ' +  user.data.group_name}</Text>
+                      </View>
+                    </View>
+                    <View style={[Styles.FlexRow]}>
+                      <View style={[Styles.Flex1]}>
+                        <Text style={[Styles.FontPrimaryRegular, Styles.TextBlack]}>{'Email'}</Text>
+                      </View>
+                      <View style={[Styles.Flex1]}>
+                        <Text style={[Styles.FontPrimaryRegular, Styles.TextBlack]}>{': ' +  user.data.email}</Text>
                       </View>
                     </View>
                     <View style={[Styles.FlexRow]}>
@@ -171,7 +176,7 @@ class Profile extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
 })
 
 const mapDispatchToProps = dispatch => ({

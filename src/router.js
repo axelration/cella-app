@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 import LogIn from './screens/Auth/LogIn'
 import Main from './screens/Main'
+import { navigationRef } from './utils/navigation'
 
 class RootNavigator extends React.Component {
   static propTypes = {
@@ -16,7 +17,7 @@ class RootNavigator extends React.Component {
     const { isAuthenticated } = this.props
 
     return (
-      <NavigationContainer>
+      <NavigationContainer ref={navigationRef}>
         <Stack.Navigator mode="card" headerMode="none">
           {isAuthenticated ? (
             <>
