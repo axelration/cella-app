@@ -3,6 +3,7 @@ import * as env from './env'
 import * as NavigationService from '../utils/navigation';
 import { Alert } from 'react-native'
 import { store } from '../stores';
+import { setUser } from '../stores/actions/userAction';
 
 const axiosInstance = axios.create({
     baseURL: env.BASE_URL_DEVELOPMENT,
@@ -11,11 +12,11 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     async config => {
-        let apiToken = store.getState().service.token
-        console.log('token', apiToken)
-        let tokenx = '';
+        let apiToken = store.getState().service.data ?? '';
+        // console.log('store', store.getState())
+        // console.log('token', apiToken)
         config.headers = {
-            'Authorization': `Bearer ${tokenx}`,
+            'Authorization': `Bearer ${apiToken}`,
             'Accept': 'application/json',
         }
         return config;
@@ -32,41 +33,20 @@ axiosInstance.interceptors.response.use(undefined, async (err) => {
         response: { status, data },
     } = err;
 
-    if (status === 401) {
+    if (status == 401) {
 
         return new Promise((resolve) => {
             Alert.alert('Silahkan Login Lagi', data.message, [{
                 text: 'OK',
-                onPress: () => NavigationService.navigate('LogIn'),
+                onPress: () => {
+                    store.dispatch(setUser({}))
+                },
             }])
         });
     }
 
     return data;
-    // return Promise.reject(err);
 });
 
-/*
-axios.interceptors.response.use(
-    (response) => {
-        alert(response)
-        // return response
-    },
-    (error) => {
-        alert(error)
-        if (error && error.response == undefined) {
-            alert('undefined')
-            return Promise.reject(
-                NavigationService.navigate("Main")
-            );
-        } else if (error && error.response && error.response.status === 401) {
-            alert('401')
-            return Promise.reject(
-                NavigationService.navigate("LogIn")
-            );
-        }
-    }
-)
-*/
 
 export default axiosInstance;

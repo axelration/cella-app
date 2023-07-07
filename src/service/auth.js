@@ -1,7 +1,10 @@
 import http from '../config/http'
+import DeviceInfo from 'react-native-device-info'
 
 const authService = {
-    login(username, password, deviceId) {
+    login(username, password) {
+        const deviceId = DeviceInfo.getUniqueId()
+
         const formdata = new FormData()
         formdata.append('username', username)
         formdata.append('password', password)

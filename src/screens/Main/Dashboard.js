@@ -1,19 +1,83 @@
 import React from 'react'
-import { SafeAreaView, ScrollView, Text, View } from 'react-native'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { Alert, SafeAreaView, ScrollView, Text, View, RefreshControl } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
 import { Header, Loading } from '../../components/'
 import { Colors, Styles } from '../../utils/'
+import attendanceService from '../../service/attendance'
+import Snackbar from 'react-native-snackbar'
 
 class Dashboard extends React.Component {
-  state = {
-    data: {
-      done: { number: '179', percentage: '57%' },
-      yet: { number: '136', percentage: '43%' },
-      late: { number: '48', percentage: '15%' },
-      early: { number: '0', percentage: '0%' }
-    },
-    loading: false
+  static propTypes = {
+    user: PropTypes.object.isRequired,
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: {
+        done: { number: '0', percentage: '0%' },
+        yet: { number: '0', percentage: '0%' },
+        late: { number: '0', percentage: '0%' },
+        early: { number: '0', percentage: '0%' }
+      },
+      loading: false,
+      refreshing: false,
+    }
+  }
+
+  getDashboardData(loading = true) {
+    if(loading) this.setState({loading: true})
+
+    const { user } = this.props
+
+    try {
+      attendanceService.getAttendanceStat(user.data.usr_id)
+      .then((res) => {
+        console.log(res)
+        if (res.status == 200 || res.data.status == 'success') {
+          let data = res.data.data
+          this.setState({
+            data: {
+              done: { number: data.total_checked, percentage: data.percentage_checked },
+              yet: { number: data.total_not_checked, percentage: data.percentage_not_checked },
+              late: { number: data.late_check_in, percentage: data.percentage_late },
+              early: { number: data.early_check_out, percentage: data.percentage_early }
+            }
+          })
+        } else {
+          throw {message: 'Gagal terkoneksi ke server'};
+        }
+        if(loading) this.setState({loading: false})
+      })
+    } catch (error) {
+      if(loading) this.setState({loading: false})
+      this.showSnackBar('Error: ' + error.message)
+    }
+
+    return Promise.resolve()
+  }
+
+  _onRefresh() {
+    this.setState({refreshing: true})
+    setTimeout(() => {
+      this.getDashboardData(false).then(() => {
+        this.setState({refreshing: false})
+      });
+    }, 500)
+  }
+
+  showSnackBar(message = '') {
+    return Snackbar.show({
+      text: message,
+      duration: Snackbar.LENGTH_SHORT,
+    });
+  }
+
+  componentDidMount() {
+    this.getDashboardData()
   }
 
   render() {
@@ -22,8 +86,17 @@ class Dashboard extends React.Component {
     return (
       <SafeAreaView style={[Styles.Container, Styles.BgWhite]}>
         <View style={[Styles.ContainerGap3]}>
-          <ScrollView>
+          <ScrollView stickyHeaderIndices={[0]}>
             <Header subtitle={'Dashboard'} />
+            <ScrollView
+              stickyHeaderIndices={[0]}
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.refreshing}
+                  onRefresh={this._onRefresh.bind(this)}
+                />
+              }
+            >
             <View style={[Styles.Section, Styles.Padding6]}>
               <View style={[Styles.Flex1]}>
                 <View style={[Styles.FlexRow]}>
@@ -77,6 +150,8 @@ class Dashboard extends React.Component {
                 </View>
               </View>
             </View>
+
+            </ScrollView>
           </ScrollView>
         </View>
         {loading ? (
@@ -87,4 +162,8 @@ class Dashboard extends React.Component {
   }
 }
 
-export default Dashboard
+const mapStateToProps = state => ({
+  user: state.user,
+})
+
+export default connect(mapStateToProps)(Dashboard)

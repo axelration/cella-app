@@ -1,48 +1,71 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { FlatList, Image, SafeAreaView, ScrollView, Text, View } from 'react-native'
+import { FlatList, Image, SafeAreaView, ScrollView, Text, View, RefreshControl } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
 import { Header, Loading } from '../../components/'
 import { Colors, Styles } from '../../utils/'
+import attendanceService from '../../service/attendance'
+import Snackbar from 'react-native-snackbar'
 
 class AbsentList extends React.Component {
   static propTypes = {
     user: PropTypes.object.isRequired
   }
 
-  state = {
-    data: [{
-      id: '1',
-      date: '1 February',
-      in: { type: 'mobile', time: '08.05 AM' },
-      out: { type: 'mobile', time: '05.35 PM' },
-      status: { type: 'On Time', color: 'Green' },
-      total: { time: '8H 30M', color: 'Blue' }
-    }, {
-      id: '2',
-      date: '2 February',
-      in: { type: 'mobile', time: '09.00 AM' },
-      out: { type: 'fingerprint', time: '07.00 PM' },
-      status: { type: 'Late', color: 'Red' },
-      total: { time: '9H 0M', color: 'Blue' }
-    }, {
-      id: '3',
-      date: '3 February',
-      in: { type: '', time: 'Not Recorded' },
-      out: { type: '', time: 'Not Recorded' },
-      status: { type: 'Not Record', color: 'Pink' },
-      total: { time: 'Null', color: 'Grey' }
-    }, {
-      id: '4',
-      date: '4 February',
-      in: { type: 'mobile', time: '08.05 AM' },
-      out: { type: 'fingerprint', time: '05.35 PM' },
-      status: { type: 'On Time', color: 'Green' },
-      total: { time: '8H 30M', color: 'Blue' }
-    }],
-    loading: false
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [],
+      loading: false,
+      refreshing: false,
+    }
+  }
+
+  getAttendanceList(loading = true) {
+    const { user } = this.props
+    if(loading) this.setState({loading: true})
+
+    try {
+      attendanceService.getAttendance(user.data.usr_id)
+      .then((res) => {
+        console.log(res)
+        if (res.status == 200 || res.data.status == 'success') {
+          let data = res.data.data
+          this.setState({
+            data: data
+          })
+        } else {
+          throw {message: 'Gagal terkoneksi ke server'};
+        }
+        if(loading) this.setState({loading: false})
+      })
+    } catch (error) {
+      if(loading) this.setState({loading: false})
+      this.showSnackBar('Error: ' + error.message)
+    }
+    return Promise.resolve()    
+  }
+
+  _onRefresh() {
+    this.setState({refreshing: true})
+    setTimeout(() => {
+      this.getAttendanceList(false).then(() => {
+        this.setState({refreshing: false})
+      });
+    }, 500)
+  }
+  
+  showSnackBar(message = '') {
+    return Snackbar.show({
+      text: message,
+      duration: Snackbar.LENGTH_SHORT,
+    });
+  }
+
+  componentDidMount() {
+    this.getAttendanceList()
   }
 
   render() {
@@ -52,7 +75,14 @@ class AbsentList extends React.Component {
     return (
       <SafeAreaView style={[Styles.Container, Styles.BgWhite]}>
         <View style={[Styles.ContainerGap3]}>
-          <ScrollView>
+          <ScrollView stickyHeaderIndices={[0]}
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh.bind(this)}
+              />
+            }
+          >
             <Header subtitle={'Daftar Absen'} />
             <FlatList
               contentContainerStyle={[Styles.Flex1, Styles.PaddingVer2, Styles.PaddingHor3, Styles.BgGreyLight]}
@@ -78,7 +108,7 @@ class AbsentList extends React.Component {
                         <View style={[Styles.H1]} />
                         <View style={[Styles.FlexRow]}>
                           <View style={[{ width: 22.5 }]} />
-                          <Text style={[Styles.FontPrimaryMedium, item.in.time === 'Not Recorded' ? Styles.TextRed   : Styles.TextBlack]}>{item.in.time}</Text>
+                          <Text style={[Styles.FontPrimaryMedium, item.in === 'Tidak Ada' ? Styles.TextRed   : Styles.TextBlack]}>{item.in}</Text>
                         </View>
                       </View>
                       <View style={[Styles.Flex1]}>
@@ -96,7 +126,7 @@ class AbsentList extends React.Component {
                         <View style={[Styles.H1]} />
                         <View style={[Styles.FlexRow]}>
                           <View style={[{ width: 22.5 }]} />
-                          <Text style={[Styles.FontPrimaryMedium, item.in.time === 'Not Recorded' ? Styles.TextRed : Styles.TextBlack]}>{item.in.time}</Text>
+                          <Text style={[Styles.FontPrimaryMedium, item.out === 'Tidak Ada' ? Styles.TextRed : Styles.TextBlack]}>{item.out}</Text>
                         </View>
                       </View>
                     </View>

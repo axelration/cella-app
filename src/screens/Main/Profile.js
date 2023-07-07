@@ -1,14 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { connect, useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 import { Image, SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scroll-view'
+import Snackbar from 'react-native-snackbar'
 
 import { setUser } from '../../stores/actions/userAction'
 import { setToken } from '../../stores/actions/serviceAction'
 import { Header, Loading } from '../../components/'
-import { Styles } from '../../utils/'
-import { store } from '../../stores'
+import { Styles } from '../../utils/index'
+import profileService from '../../service/profile'
 
 class Profile extends React.Component {
   static propTypes = {
@@ -22,30 +23,86 @@ class Profile extends React.Component {
       passwordNew: '',
       passwordNewConfirmation: ''
     },
-    loading: false
+    loading: false,
+    errorPwd: false,
   }
 
   handleLogOut() {
     const { dispatch } = this.props
 
     this.setState({ loading: true })
+    dispatch(setUser({}))
+    dispatch(setToken({}))
+    this.setState({ loading: false })
+  }
 
-    // setTimeout(() => {
-      dispatch(setUser({}))
-      dispatch(setToken({}))
-      this.setState({ loading: false })
-    // }, 1000)
+  handleChangePassword() {
+    const { user } = this.props
+    const { password, passwordNew, passwordNewConfirmation, errorPwd } = this.state.data
+
+    if (password == '') {
+      return this.showSnackBar('Password lama tidak boleh kosong')
+    } else if(passwordNew != passwordNewConfirmation) {
+      this.setState({ errorPwd: true })
+      return this.showSnackBar('Konfirmasi password baru tidak sesuai')
+    } else if(passwordNew.length < 8) {
+      return this.showSnackBar('Password baru minimal 8 karakter')
+    }
+
+    if(!errorPwd) {
+      profileService.changePassword(user.data.usr_id, password, passwordNew, passwordNewConfirmation)
+      .then((res) => {
+        console.log(res)
+        this.setState({ loading: false })
+
+        if(res.status == 'success' || res.status == '200') {
+          this.setState({ 
+            loading: false, 
+            data: {
+              password: '',
+              passwordNew: '',
+              passwordNewConfirmation: '',
+            } 
+          })
+        }
+
+        return this.showSnackBar(res.message ?? res.data.message);
+      })
+    }
+    
+  }
+
+  showSnackBar(message = '') {
+    return Snackbar.show({
+      text: message,
+      duration: Snackbar.LENGTH_SHORT,
+    });
   }
 
   handleDataChange(label, value) {
+    switch (label) {
+      case 'passwordNewConfirmation':
+        if(value != this.state.data.passwordNew) {
+          this.setState({errorPwd: true})
+        } else {
+          this.setState({errorPwd: false})
+        }
+        break;
+      case 'passwordNew':
+        if(value != this.state.data.passwordNewConfirmation) {
+          this.setState({errorPwd: true})
+        } else {
+          this.setState({errorPwd: false})
+        }
+        break;
+    }
+    
     this.setState({ data: { ...this.state.data, [label]: value } })
   }
 
   render() {
     const { user } = this.props
     const { data, loading } = this.state
-    let apiToken = store.getState().service.data
-    console.log('apitoken', apiToken)
 
     return (
       <SafeAreaView style={[Styles.Container, Styles.BgWhite]}>
@@ -118,7 +175,7 @@ class Profile extends React.Component {
                   <View style={[Styles.H1]} />
                   <TextInput
                     autoCapitalize={'none'}
-                    returnKeyType="done"
+                    returnKeyType="next"
                     secureTextEntry={true}
                     style={[Styles.PaddingHor3, Styles.Border1, Styles.BorderRadius1, Styles.BorderBlack, Styles.FontPrimaryRegular, Styles.H8]}
                     ref={(ref) => { this.password = ref }}
@@ -131,7 +188,7 @@ class Profile extends React.Component {
                   <View style={[Styles.H1]} />
                   <TextInput
                     autoCapitalize={'none'}
-                    returnKeyType="done"
+                    returnKeyType="next"
                     secureTextEntry={true}
                     style={[Styles.PaddingHor3, Styles.Border1, Styles.BorderRadius1, Styles.BorderBlack, Styles.FontPrimaryRegular, Styles.H8]}
                     ref={(ref) => { this.passwordNew = ref }}
@@ -149,18 +206,21 @@ class Profile extends React.Component {
                     style={[Styles.PaddingHor3, Styles.Border1, Styles.BorderRadius1, Styles.BorderBlack, Styles.FontPrimaryRegular, Styles.H8]}
                     ref={(ref) => { this.passwordNewConfirmation = ref }}
                     onChangeText={(text) => this.handleDataChange('passwordNewConfirmation', text)}
-                    onSubmitEditing={() => { this.handleLogOut() }}
+                    onSubmitEditing={() => { this.handleChangePassword() }}
                     value={data.passwordNewConfirmation}
                   />
+                  {this.state.errorPwd ? (
+                    <Text style={[Styles.FontPrimaryMedium, Styles.TextRed]}>{'* Konfirmasi Password Baru tidak sesuai'}</Text>
+                  ) : null}
                   <View style={[Styles.H4]} />
                   <View style={[Styles.Flex1, Styles.FlexCenter]}>
-                    <TouchableOpacity style={[Styles.FlexCenter, Styles.Border1, Styles.BorderBlack, Styles.BorderRadius1, Styles.BgGreyLight, Styles.W32, Styles.H8]}>
-                      <Text style={[Styles.FontPrimaryMedium, Styles.TextBlack]}>{'GANTI PASSWORD'}</Text>
+                    <TouchableOpacity style={[Styles.FlexCenter, Styles.Border1, Styles.BorderGrey, Styles.BorderRadius2, Styles.BgGreyLight, Styles.W32, Styles.H8]} onPress={() => this.handleChangePassword()}>
+                      <Text style={[Styles.FontPrimaryMedium, Styles.TextTheme1]}>{'GANTI PASSWORD'}</Text>
                     </TouchableOpacity>
                   </View>
                   <View style={[Styles.H8]} />
-                  <TouchableOpacity style={[Styles.FlexCenter, Styles.Border1, Styles.BorderBlack, Styles.BorderRadius1, Styles.BgGreyLight, Styles.H8]} onPress={() => this.handleLogOut()}>
-                    <Text style={[Styles.FontPrimaryMedium, Styles.TextBlack]}>{'LOG OUT'}</Text>
+                  <TouchableOpacity style={[Styles.FlexCenter, Styles.Border1, Styles.BorderBlack, Styles.BorderRadius1, Styles.BgTheme1, Styles.H8]} onPress={() => this.handleLogOut()}>
+                    <Text style={[Styles.FontPrimaryMedium, Styles.TextWhite]}>{'LOG OUT'}</Text>
                   </TouchableOpacity>
                 </View>
               </View>

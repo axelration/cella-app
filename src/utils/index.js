@@ -432,7 +432,6 @@ const Styles = {
     backgroundColor: "rgba(215, 24, 14, 1)"
   },
   BgTheme2: {
-    // backgroundColor: "rgba(214, 14, 79, 1)"
     backgroundColor: "linear-gradient(133deg, rgba(214, 14, 79, 1) 0%, rgba(252, 56, 55, 1) 100%);"
   },
   Text1: {
@@ -491,6 +490,9 @@ const Styles = {
   },
   TextPink: {
     color: Colors.Pink
+  },
+  TextTheme1: {
+    color: 'rgba(70,70,70,1)'
   },
   TextLeft: {
     textAlign: 'left'

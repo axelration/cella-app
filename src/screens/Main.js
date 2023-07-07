@@ -72,7 +72,7 @@ class Main extends React.Component {
           name={'AbsentList'}
           component={AbsentList}
           options={{
-            tabBarLabel: 'Daftar Absen',
+            tabBarLabel: 'Daftar Presensi',
             tabBarIcon: ({ focused, color, size }) => (
               <AntDesign name="bells" size={28} color={focused ? Styles.BGTheme1 : Colors.Grey} />
             )
@@ -82,7 +82,7 @@ class Main extends React.Component {
           name={'Profile'}
           component={Profile}
           options={{
-            tabBarLabel: 'Profile',
+            tabBarLabel: 'Profil',
             tabBarIcon: ({ focused, color, size }) => (
               <AntDesign name="user" size={28} color={focused ? Styles.BGTheme1 : Colors.Grey} />
             )

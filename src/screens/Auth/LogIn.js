@@ -4,14 +4,12 @@ import PropTypes from 'prop-types'
 import { Image, SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scroll-view'
 
-// import { setUser } from '../../stores/actions/userAction'
+import { setUser } from '../../stores/actions/userAction'
 import { setToken } from '../../stores/actions/serviceAction'
 import { Loading } from '../../components/'
 import { OS, Aspect, Styles } from '../../utils/'
 import authService from '../../service/auth'
-import DeviceInfo from 'react-native-device-info'
 import Snackbar from 'react-native-snackbar'
-import { setUser } from '../../stores/actions/userAction'
 
 class LogIn extends React.Component {
   static propTypes = {
@@ -33,11 +31,10 @@ class LogIn extends React.Component {
   handleLogIn() {
     const { dispatch } = this.props
     const { username, password } = this.state.data
-    const deviceId = DeviceInfo.getUniqueId()
 
     this.setState({ loading: true })
 
-    authService.login(username, password, deviceId)
+    authService.login(username, password)
     .then((res) => {
       console.log(res)
       if(res.status == 'failed' || res.code == 500 ) {
