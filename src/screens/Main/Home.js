@@ -128,6 +128,8 @@ class Home extends React.Component {
             ...this.state.region,
             latitude: parseFloat(data.latitude),
             longitude: parseFloat(data.longitude),
+            latitudeDelta: parseFloat(data.latitude_delta) ?? 0.005,
+            longitudeDelta: parseFloat(data.longitude_delta) ?? 0.0075
           },
           radius: data.radius,
           limit: {
@@ -215,7 +217,7 @@ class Home extends React.Component {
 
   render() {
     const { user } = this.props
-    const { region, loading, self } = this.state
+    const { region, loading, self, radius } = this.state
 
     return (
       <SafeAreaView style={[Styles.Container, Styles.BgWhite]}>
@@ -238,7 +240,7 @@ class Home extends React.Component {
                   >
                     <MapView.Circle
                       center={region}
-                      radius={500}
+                      radius={radius}
                       strokeColor={Colors.MapStroke}
                       strokeWidth={2}
                       fillColor={Colors.MapFill}
