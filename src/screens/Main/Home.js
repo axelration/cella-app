@@ -128,10 +128,10 @@ class Home extends React.Component {
             ...this.state.region,
             latitude: parseFloat(data.latitude),
             longitude: parseFloat(data.longitude),
-            latitudeDelta: parseFloat(data.latitude_delta) ?? 0.005,
-            longitudeDelta: parseFloat(data.longitude_delta) ?? 0.0075
+            latitudeDelta: parseFloat(data.longitude_delta) ?? 0.005,
+            longitudeDelta: parseFloat(data.longitude_delta) ?? 0.0075,
           },
-          radius: data.radius,
+          radius: parseInt(data.radius),
           limit: {
             ...this.state.limit,
             checkInEnable: data.check_in_enable,
