@@ -228,7 +228,7 @@ class Home extends React.Component {
                   <Text style={[Styles.FontPrimaryRegular, Styles.TextBlack, Styles.Text2]}>{user.data.company_name + ' - ' + user.data.group_name}</Text>
                 ) : null}
                 <View style={[Styles.H4]} />
-                <View style={[{ justifyContent: 'flex-end', alignItems: 'center', width: Aspect.Width - 60, height: Aspect.Width + 50 }]}>
+                <View style={[{ justifyContent: 'flex-end', alignItems: 'center', width: Aspect.Width - 60, height: Aspect.Width + 20 }]}>
                   <MapView
                     provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                     style={[{ ...StyleSheet.absoluteFillObject }]}

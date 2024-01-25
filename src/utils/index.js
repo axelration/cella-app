@@ -524,6 +524,18 @@ const Styles = {
   Margin6: {
     margin: 30
   },
+  MarginRight1: {
+    marginRight: 5
+  },
+  MarginRight2: {
+    marginRight: 10
+  },
+  MarginRight3: {
+    marginRight: 15
+  },
+  MarginRight4: {
+    marginRight: 20
+  },
   MarginVer1: {
     marginVertical: 5
   },
@@ -871,7 +883,13 @@ const Styles = {
   },
   Transform1_: {
     transform: [{ scaleX: 0.6 }, { scaleY: 0.6 }]
-  }
+  },
+  LTR: {
+    alignSelf: 'flex-start'
+  },
+  RTL: {
+    alignSelf: 'flex-end'
+  },
 }
 
 const UI = {

@@ -97,59 +97,59 @@ class Dashboard extends React.Component {
                 />
               }
             >
-            <View style={[Styles.Section, Styles.Padding6]}>
-              <View style={[Styles.Flex1]}>
-                <View style={[Styles.FlexRow]}>
-                  <View style={[Styles.Flex1]}>
-                    <View style={[Styles.FlexRow, Styles.BgGreen, Styles.FlexAlignCenter, Styles.Padding2, Styles.BorderRadius2, Styles.BoxShadow]}>
-                      <AntDesign name="adduser" size={36} color={Colors.White} />
-                      <View style={[Styles.Flex1]}>
-                        <Text style={[Styles.FontPrimaryRegular, Styles.TextWhite, Styles.TextRight]}>{'Sudah Absen'}</Text>
-                        <Text style={[Styles.FontPrimaryLight, Styles.TextWhite, Styles.TextRight, Styles.Text6]}>{data.done.number}</Text>
-                        <Text style={[Styles.FontPrimaryRegular, Styles.TextWhite, Styles.TextRight]}>{data.done.percentage}</Text>
+              <View style={[Styles.Section, Styles.Padding6]}>
+                <View style={[Styles.Flex1]}>
+                  <View style={[Styles.FlexRow]}>
+                    <View style={[Styles.Flex1]}>
+                      <View style={[Styles.FlexRow, Styles.BgGreen, Styles.FlexAlignCenter, Styles.Padding2, Styles.BorderRadius2, Styles.BoxShadow]}>
+                        <AntDesign name="adduser" size={36} color={Colors.White} />
+                        <View style={[Styles.Flex1]}>
+                          <Text style={[Styles.FontPrimaryRegular, Styles.TextWhite, Styles.TextRight]}>{'Sudah Absen'}</Text>
+                          <Text style={[Styles.FontPrimaryLight, Styles.TextWhite, Styles.TextRight, Styles.Text6]}>{data.done.number}</Text>
+                          <Text style={[Styles.FontPrimaryRegular, Styles.TextWhite, Styles.TextRight]}>{data.done.percentage}</Text>
+                        </View>
+                      </View>
+                    </View>
+                    <View style={[Styles.W3]} />
+                    <View style={[Styles.Flex1]}>
+                      <View style={[Styles.FlexRow, Styles.BgRed, Styles.FlexAlignCenter, Styles.Padding2, Styles.BorderRadius2, Styles.BoxShadow]}>
+                        <AntDesign name="deleteuser" size={36} color={Colors.White} />
+                        <View style={[Styles.Flex1]}>
+                          <Text style={[Styles.FontPrimaryRegular, Styles.TextWhite, Styles.TextRight]}>{'Belum Absen'}</Text>
+                          <Text style={[Styles.FontPrimaryLight, Styles.TextWhite, Styles.TextRight, Styles.Text6]}>{data.yet.number}</Text>
+                          <Text style={[Styles.FontPrimaryRegular, Styles.TextWhite, Styles.TextRight]}>{data.yet.percentage}</Text>
+                        </View>
                       </View>
                     </View>
                   </View>
-                  <View style={[Styles.W3]} />
-                  <View style={[Styles.Flex1]}>
-                    <View style={[Styles.FlexRow, Styles.BgRed, Styles.FlexAlignCenter, Styles.Padding2, Styles.BorderRadius2, Styles.BoxShadow]}>
-                      <AntDesign name="deleteuser" size={36} color={Colors.White} />
-                      <View style={[Styles.Flex1]}>
-                        <Text style={[Styles.FontPrimaryRegular, Styles.TextWhite, Styles.TextRight]}>{'Belum Absen'}</Text>
-                        <Text style={[Styles.FontPrimaryLight, Styles.TextWhite, Styles.TextRight, Styles.Text6]}>{data.yet.number}</Text>
-                        <Text style={[Styles.FontPrimaryRegular, Styles.TextWhite, Styles.TextRight]}>{data.yet.percentage}</Text>
+                </View>
+                <View style={[Styles.H3]} />
+                <View style={[Styles.Flex1]}>
+                  <View style={[Styles.FlexRow]}>
+                    <View style={[Styles.Flex1]}>
+                      <View style={[Styles.FlexRow, Styles.BgOrange, Styles.FlexAlignCenter, Styles.Padding2, Styles.BorderRadius2, Styles.BoxShadow]}>
+                        <AntDesign name="exclamationcircleo" size={36} color={Colors.White} />
+                        <View style={[Styles.Flex1]}>
+                          <Text style={[Styles.FontPrimaryRegular, Styles.TextWhite, Styles.TextRight]}>{'Terlambat'}</Text>
+                          <Text style={[Styles.FontPrimaryLight, Styles.TextWhite, Styles.TextRight, Styles.Text6]}>{data.late.number}</Text>
+                          <Text style={[Styles.FontPrimaryRegular, Styles.TextWhite, Styles.TextRight]}>{data.late.percentage}</Text>
+                        </View>
+                      </View>
+                    </View>
+                    <View style={[Styles.W3]} />
+                    <View style={[Styles.Flex1]}>
+                      <View style={[Styles.FlexRow, Styles.BgPink, Styles.FlexAlignCenter, Styles.Padding2, Styles.BorderRadius2, Styles.BoxShadow]}>
+                        <AntDesign name="clockcircleo" size={36} color={Colors.White} />
+                        <View style={[Styles.Flex1]}>
+                          <Text style={[Styles.FontPrimaryRegular, Styles.TextWhite, Styles.TextRight]}>{'Pulang Awal'}</Text>
+                          <Text style={[Styles.FontPrimaryLight, Styles.TextWhite, Styles.TextRight, Styles.Text6]}>{data.early.number}</Text>
+                          <Text style={[Styles.FontPrimaryRegular, Styles.TextWhite, Styles.TextRight]}>{data.early.percentage}</Text>
+                        </View>
                       </View>
                     </View>
                   </View>
                 </View>
               </View>
-              <View style={[Styles.H3]} />
-              <View style={[Styles.Flex1]}>
-                <View style={[Styles.FlexRow]}>
-                  <View style={[Styles.Flex1]}>
-                    <View style={[Styles.FlexRow, Styles.BgOrange, Styles.FlexAlignCenter, Styles.Padding2, Styles.BorderRadius2, Styles.BoxShadow]}>
-                      <AntDesign name="exclamationcircleo" size={36} color={Colors.White} />
-                      <View style={[Styles.Flex1]}>
-                        <Text style={[Styles.FontPrimaryRegular, Styles.TextWhite, Styles.TextRight]}>{'Terlambat'}</Text>
-                        <Text style={[Styles.FontPrimaryLight, Styles.TextWhite, Styles.TextRight, Styles.Text6]}>{data.late.number}</Text>
-                        <Text style={[Styles.FontPrimaryRegular, Styles.TextWhite, Styles.TextRight]}>{data.late.percentage}</Text>
-                      </View>
-                    </View>
-                  </View>
-                  <View style={[Styles.W3]} />
-                  <View style={[Styles.Flex1]}>
-                    <View style={[Styles.FlexRow, Styles.BgPink, Styles.FlexAlignCenter, Styles.Padding2, Styles.BorderRadius2, Styles.BoxShadow]}>
-                      <AntDesign name="clockcircleo" size={36} color={Colors.White} />
-                      <View style={[Styles.Flex1]}>
-                        <Text style={[Styles.FontPrimaryRegular, Styles.TextWhite, Styles.TextRight]}>{'Pulang Awal'}</Text>
-                        <Text style={[Styles.FontPrimaryLight, Styles.TextWhite, Styles.TextRight, Styles.Text6]}>{data.early.number}</Text>
-                        <Text style={[Styles.FontPrimaryRegular, Styles.TextWhite, Styles.TextRight]}>{data.early.percentage}</Text>
-                      </View>
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </View>
 
             </ScrollView>
           </ScrollView>

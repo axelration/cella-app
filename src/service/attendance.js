@@ -2,11 +2,12 @@ import http from '../config/http'
 import DeviceInfo from 'react-native-device-info'
 
 const attendanceService = {
-    getAttendance(usr_id) {
+    getAttendance(usr_id, type = '') {
         const deviceId = DeviceInfo.getUniqueId()
 
         const formdata = new FormData()
         formdata.append('usr_id', usr_id)
+        formdata.append('type', type)
         formdata.append('device_id', deviceId)
         
         const config = {
