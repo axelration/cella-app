@@ -55,17 +55,17 @@ class AbsentList extends React.Component {
     if(loading) this.setState({loading: true})
 
     try {
-      // attendanceService.getAttendance(user.data.usr_id, type)
-      // .then((res) => {
-      //   console.log(res)
-      //   if (res.status == 200 || res.data.status == 'success') {
-      //     let data = res.data.data
-      //     this.checkPermission(data)
-      //   } else {
-      //     throw {message: 'Gagal terkoneksi ke server'};
-      //   }
+      attendanceService.getAttendance(user.data.usr_id, type)
+      .then((res) => {
+        console.log(res)
+        if (res.status == 200 || res.data.status == 'success') {
+          let data = res.data.data
+          this.checkPermission(data)
+        } else {
+          throw {message: 'Gagal terkoneksi ke server'};
+        }
         if(loading) this.setState({loading: false})
-      // })
+      })
     } catch (error) {
       if(loading) this.setState({loading: false})
       this.showSnackBar('Error: ' + error.message)
@@ -75,7 +75,7 @@ class AbsentList extends React.Component {
 
   checkPermission = async (data) => {
     if (Platform.OS === 'ios') {
-      downloadFile(data);
+      this.downloadFile(data);
     } else {
       try {
         const granted = await PermissionsAndroid.request(
@@ -88,7 +88,7 @@ class AbsentList extends React.Component {
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
           // Start downloading
-          downloadFile(data);
+          this.downloadFile(data);
           console.log('Storage Permission Granted.');
         } else {
           // If permission denied then show alert
@@ -107,7 +107,7 @@ class AbsentList extends React.Component {
     // Get today's date to add the time suffix in filename
     let date = new Date();
     // File URL which we want to download
-    let FILE_URL = fileUrl;
+    let FILE_URL = fileUrl.file_url;
     // Function to get extension of the file url
     let file_ext = this.getFileExtension(FILE_URL);
    
@@ -125,7 +125,7 @@ class AbsentList extends React.Component {
           '/file_' + 
           Math.floor(date.getTime() + date.getSeconds() / 2) +
           file_ext,
-        description: 'Downloading file...',
+        description: 'Mendownload file...',
         notification: true,
         // useDownloadManager works with Android only
         useDownloadManager: true,   
@@ -136,8 +136,13 @@ class AbsentList extends React.Component {
       .then(res => {
         // Alert after successful downloading
         console.log('res -> ', JSON.stringify(res));
-        this.showSnackBar('File Downloaded Successfully.');
-      });
+        attendanceService.deleteFile(fileUrl.file_name)
+        .then(() => {
+          this.showSnackBar('File sukses didownload');
+        })
+      })
+
+      return Promise.resolve()
   };
 
   getFileExtension = fileUrl => {

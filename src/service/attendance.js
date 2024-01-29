@@ -66,6 +66,21 @@ const attendanceService = {
         }
 
         return http.post('api/setAttendance', formdata, config)
+    },
+    deleteFile(file_name) {
+        const deviceId = DeviceInfo.getUniqueId()
+
+        const formdata = new FormData()
+        formdata.append('device_id', deviceId)
+        formdata.append('file_name', file_name)
+
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        }
+
+        return http.post('api/deleteFileTmp', formdata, config)
     }
 }
 

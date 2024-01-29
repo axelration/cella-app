@@ -28,24 +28,34 @@ axiosInstance.interceptors.request.use(
 
 
 axiosInstance.interceptors.response.use(undefined, async (err) => {
-    const {
-        config,
-        response: { status, data },
-    } = err;
-
-    if (status == 401) {
-
-        return new Promise((resolve) => {
-            Alert.alert('Silahkan Login Lagi', data.message, [{
-                text: 'OK',
-                onPress: () => {
-                    store.dispatch(setUser({}))
-                },
-            }])
-        });
+    if(err.response == undefined) {
+        err = {
+            status: 'failed',
+            message: 'Gagal koneksi ke server',
+            axiosMessage: err
+        }
+        
+        return err
+    } else {
+        const {
+            config,
+            response: { status, data },
+        } = err;
+    
+        if (status == 401) {
+    
+            return new Promise((resolve) => {
+                Alert.alert('Silahkan Login Lagi', data.message, [{
+                    text: 'OK',
+                    onPress: () => {
+                        store.dispatch(setUser({}))
+                    },
+                }])
+            });
+        }
+    
+        return data;
     }
-
-    return data;
 });
 
 

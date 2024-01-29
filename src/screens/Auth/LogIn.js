@@ -48,6 +48,9 @@ class LogIn extends React.Component {
         dispatch(setUser(res.data.user))
         this.setState({ loading: false })
       }
+    }, (err) => {
+      console.error(err)
+      this.setState({ loading: false })
     })
     
   }
