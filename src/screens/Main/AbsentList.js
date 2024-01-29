@@ -178,17 +178,17 @@ class AbsentList extends React.Component {
     return (
       <SafeAreaView style={[Styles.Container, Styles.BgWhite]}>
         <View style={[Styles.ContainerGap3]}>
-          <ScrollView stickyHeaderIndices={[0]}>
+          <ScrollView 
+            stickyHeaderIndices={[0]}
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh.bind(this)}
+              />
+            }
+          >
             <Header subtitle={'Daftar Absen'} />
-            <ScrollView 
-              stickyHeaderIndices={[0]}
-              refreshControl={
-                <RefreshControl
-                  refreshing={this.state.refreshing}
-                  onRefresh={this._onRefresh.bind(this)}
-                />
-              }
-            >
+            <ScrollView stickyHeaderIndices={[0]}>
               <View style={[Styles.H2]} />
               <View style={[Styles.Flex1, Styles.FlexRow, Styles.RTL, Styles.MarginRight3]}>
                 <TouchableOpacity 
